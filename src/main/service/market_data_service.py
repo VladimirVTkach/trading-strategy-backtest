@@ -3,9 +3,9 @@ from binance import AsyncClient
 from binance.enums import HistoricalKlinesType
 from binance.enums import KLINE_INTERVAL_1DAY, KLINE_INTERVAL_1HOUR, KLINE_INTERVAL_6HOUR, KLINE_INTERVAL_15MINUTE, \
     KLINE_INTERVAL_1MINUTE
-from main.model.candlestick import Candlestick
-from main.model.market_type import MarketType
-from main.model.time_interval import TimeInterval
+from model.candlestick import Candlestick
+from model.market_type import MarketType
+from model.time_interval import TimeInterval
 
 
 class MarketDataService:
@@ -36,15 +36,15 @@ class MarketDataService:
         kline_interval = self._get_kline_interval(interval)
 
         if market_type == MarketType.SPOT:
-            kline = await self._binance_client.get_klines(symbol=symbol,
-                                                          interval=kline_interval,
-                                                          limit=1)
+            klines = await self._binance_client.get_klines(symbol=symbol,
+                                                           interval=kline_interval,
+                                                           limit=1)
         else:
-            kline = await self._binance_client.futures_klines(symbol=symbol,
-                                                              interval=kline_interval,
-                                                              limit=1)
+            klines = await self._binance_client.futures_klines(symbol=symbol,
+                                                               interval=kline_interval,
+                                                               limit=1)
 
-        return self._build_candlestick(kline)
+        return self._build_candlestick(klines[0])
 
     def _get_kline_interval(self, interval: TimeInterval):
         if interval == TimeInterval.ONE_DAY:
