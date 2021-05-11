@@ -16,7 +16,7 @@ class MarketDataService:
                                           symbol: str,
                                           market_type: MarketType,
                                           interval: TimeInterval,
-                                          start_date: str) -> List[Candlestick]:
+                                          start_date: int) -> List[Candlestick]:
         kline_interval = self._get_kline_interval(interval)
         historical_klines_type = self._get_historical_klines_type(market_type)
 
