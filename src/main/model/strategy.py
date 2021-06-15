@@ -1,6 +1,3 @@
 class Strategy:
-    def __init__(self, candlestics):
-        self._candlestics = candlestics
-
-    def run(self):
+    def run(self, candlesticks, initial_balance):
         pass
