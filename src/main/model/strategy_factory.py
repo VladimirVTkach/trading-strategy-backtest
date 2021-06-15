@@ -1,4 +1,4 @@
-from hold_strategy import HoldStrategy
+from model.hold_strategy import HoldStrategy
 
 
 class StrategyFactory:
