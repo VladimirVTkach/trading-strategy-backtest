@@ -16,9 +16,18 @@
             margin-top: 10px;
         }
 
+        #initial-balance-label-block {
+            margin-top: 10px;
+        }
+
+        #strategy-label-block {
+            margin-top: 10px;
+        }
+
         #submit-button {
             margin-top: 10px;
         }
+
 
     </style>
 </head>
@@ -63,6 +72,29 @@
         <div id="start-date-block" class="row">
             <div class="col-4">
                 <input id="start-date" type="text" class="form-control" name="start_date">
+            </div>
+        </div>
+        <div id="initial-balance-label-block" class="row">
+            <div class="col-4">
+                <label for="initial-balance">Initial balance</label>
+            </div>
+        </div>
+        <div id="initial-balance-block" class="row">
+            <div class="col-4">
+                <input id="initial-balance" type="number" class="form-control" name="initial_balance">
+            </div>
+        </div>
+        <div id="strategy-label-block" class="row">
+            <div class="col-4">
+                <label for="strategy">Strategy</label>
+            </div>
+        </div>
+        <div id="strategy-block" class="row">
+            <div class="col-4">
+                <select id="strategy" class="custom-select" name="strategy">
+                    <option value="hold">Buy and hold</option>
+                    <option value="mean_price_based">Based on mean price</option>
+                </select>
             </div>
         </div>
         <div class="row">
