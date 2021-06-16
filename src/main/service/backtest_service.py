@@ -24,6 +24,7 @@ class BacktestService:
         balance_history = strategy.run(candlesticks=candlesticks,
                                        initial_balance=initial_balance)
 
+        plt.clf()
         plt.plot(balance_history)
 
         filename = f'balance_history_{self._current_file_index}.png'
