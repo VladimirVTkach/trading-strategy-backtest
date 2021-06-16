@@ -1,25 +1,38 @@
-from fastapi import FastAPI
 from binance import AsyncClient
+from fastapi import FastAPI, Request, Form
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
+
+from controller.backtest_controller import BacktestController
 from service.market_data_service import MarketDataService
-from controller.market_data_controller import MarketDataController
+from service.backtest_service import BacktestService
+from model.strategy_factory import StrategyFactory
 
 client = AsyncClient()
 market_data_service = MarketDataService(client)
-market_data_controller = MarketDataController(market_data_service)
+
+strategy_factory = StrategyFactory()
+backtest_service = BacktestService(market_data_service, strategy_factory)
+
+templates_engine = Jinja2Templates(directory="../resources/templates")
+backtest_controller = BacktestController(template_engine=templates_engine, backtest_service=backtest_service)
 
 app = FastAPI()
 
 
-@app.get("/candlesticks/historic/{symbol}/{market_type}/{interval}/{start_date}")
-async def get_historical_candlesticks(symbol, market_type, interval, start_date):
-    return await market_data_controller.get_historical_candlesticks(symbol=symbol,
-                                                                    market_type=market_type,
-                                                                    interval=interval,
-                                                                    start_date=start_date)
+@app.get("/", response_class=HTMLResponse)
+async def get_backtest_form(request: Request):
+    return await backtest_controller.get_backtest_form(request)
 
 
-@app.get("/candlesticks/current/{symbol}/{market_type}/{interval}")
-async def get_current_candlestick(symbol, market_type, interval):
-    return await market_data_controller.get_current_candlestick(symbol=symbol,
-                                                                market_type=market_type,
-                                                                interval=interval)
+@app.post("/backtest/run/")
+async def get_backtest_result(symbol: str = Form(...),
+                              interval: str = Form(...),
+                              start_date: str = Form(...),
+                              initial_balance: int = Form(...),
+                              strategy: str = Form(...)):
+    return await backtest_controller.get_backtest_result(symbol=symbol,
+                                                         interval=interval,
+                                                         start_date=start_date,
+                                                         initial_balance=initial_balance,
+                                                         strategy=strategy)
